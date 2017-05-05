@@ -12,7 +12,7 @@ Included in this class:
 ### Initialization
 
 ```Python
-network=RNN(training_data, training_labels, validation_data, validation_labels, network_save_filename, minimum_epoch = 5, maximum_epoch = 10, n_hidden = [100,100], n_classes = 2, cell_type = 'LSTMP', configuration = ''B', attenion_number = 2, init_method = 'zero', truncated = 1000, optimizer ='Adam', learning_rate = 0.003, display_train_loss ='True', display_accuracy='True')
+network = RNN(training_data, training_labels, validation_data, validation_labels, network_save_filename, minimum_epoch = 5, maximum_epoch = 10, n_hidden = [100,100], n_classes = 2, cell_type = 'LSTMP', configuration = ''B', attenion_number = 2, init_method = 'zero', truncated = 1000, optimizer ='Adam', learning_rate = 0.003, display_train_loss ='True', display_accuracy='True')
 ```
 
 `training_data`  : training data features used to train the network [dim1 x dim2] 
@@ -82,13 +82,59 @@ Runs the test data through the network.
 
 Included in this class:
 - 2d convolution
--3d convoliution
+
+-3d convolution
 
 ### Initialization
 
+def __init__(self,features,targ,val,val_targ,minibatch_nos,filename,minimum_epoch=0,maximum_epoch=1,learning_rate=0.003,n_classes=2,optimizer='Adam',conv_filter_shapes=[[5,5,1,5],[5,5,5,10]],conv_strides=[[1,1,1,1],[1,1,1,1]],pool_window_sizes=[[1,1,2,1],[1,1,2,1]],fc_layer_sizes=[100],dropout=0.25,pad='SAME',display_accuracy='True',display_train_loss='True',frames_either_side=[[2,2],[0,0]],input_stride_size=[1,1025],dim='2d'):
+
+
 ```Python
-network=RNN(training_data, training_labels, validation_data, validation_labels, network_save_filename, minimum_epoch=5, maximum_epoch=100, learning_rate=0.003, n_classes=2, optimizer='Adam', conv_filter_shapes=[[5,5,1,5],[5,5,5,10]], conv_strides=[[1,1,1,1],[1,1,1,1]], pool_window_sizes=[1,1,2,1],[1,1,2,1]], fc_l)
+network =	CNN(training_data, training_labels, validation_data, validation_labels, mini_batch_locations, network_save_filename, minimum_epoch = 5, maximum_epoch = 100, learning_rate = 0.003, n_classes = 2, optimizer = 'Adam', conv_filter_shapes = [[5,5,1,5],[5,5,5,10]], conv_strides = [[1,1,1,1],[1,1,1,1]], pool_window_sizes=[1,1,2,1],[1,1,2,1]], fc_layer_size = [100], dropout = 0.25, pad = 'SAME', display_accuracy='True', display_train_loss='True', frames_either_side = [[2,2],[0,0]], input_stride_size = [1, 1025], dim = '2d')
 ```
+
+`training_data`  : training data features used to train the network [dim1 x dim2] 
+
+`training_labels` : 	training labels corresponding to training_data [dim1 x dim2]
+
+`validation_data` : 	validation data features used to validate the network [dim1 x dim2]
+
+`validation_labels` : 	validation labels corresponding to validation_data [dim1 x dim2]
+
+`network_save_filename` :	 the filename named used to save the network configuration and parameters.
+
+`minimum_epoch` :	the minimum number of training epochs.
+
+`maximum_epoch` : 	the maximum number of training epochs.
+
+`n_hidden`: 		the number of layers in each hidden layer.
+
+`n_layers` :		the number of layers (could remove this)
+
+`n_classes` :	the number of output classes / neurons in the output layer.
+
+`cell_type` :		the cell architectures used for the hidden layers
+
+`configuration` :		the configuration used
+
+`attention_number` :     the number of soft attention connections 
+
+`dropout` :		the dropout probability.
+
+`init_method` :	the initialization technique used.
+
+`truncated` : 	the truncation number used in truncated back_propagation
+
+`optimizer` :		the optimizer used
+
+`learning_rate` : 	the learning rate used
+
+`display_train_loss` : 	to whether or not to display the train 	
+
+`display_accuracy` :	whether or not to display the accuracies
+
+
 
 ### Functions
 
