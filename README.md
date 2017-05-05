@@ -26,12 +26,10 @@ For further install information see the [install](https://github.com/CarlSouthal
 
 ## Algorithms
 
--- CNN -- Convolutional neural networks :
-
+-- CNN (Convolutional neural networks) -- :
 - 2d and 3d convolutional usage.
 
--- RNN -- Recurrent neural networks :
-
+-- RNN Recurrent neural networks) -- :
  -  tanh, LSTM, LSTMP and GRU cell architectures.
  - single directional and bi-directional configurations.
  -  soft attention mechanisms.
