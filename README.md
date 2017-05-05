@@ -26,7 +26,7 @@ For further install information see the [install](https://github.com/CarlSouthal
 
 ## Algorithms
 
-CNN - Convolutional neural networks - includes both 2d and 3d usage.
+CNN - Convolutional neural networks - includes both 2d and 3d usage. <space><space>
 RNN - Recurrent neural networks - includes tanh, LSTM, LSTMP and GRU cells, single directional and bi-directional configurations and soft attention output layers.
 
 ## Usage
