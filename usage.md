@@ -60,14 +60,19 @@ network=RNN(training_data, training_labels, validation_data, validation_labels, 
 ```
 network.create()
 ```
+Creates the network using the given parameters.
 
 ```
 network.train()
 ```
+Trains the network using the given training and validation data.
 
 ```
-network.implement()
+out=network.implement(Test_data)
 ```
+
+Runs the test data through the network.
+
 
 
 
