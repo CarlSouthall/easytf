@@ -74,6 +74,10 @@ out=network.implement(Test_data)
 Runs the test data through the network.
 
 
+### Examples
+
+
+
 ## easytf.CNN (Convolutional neural networks)
 
 Included in this class:
