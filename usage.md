@@ -1,15 +1,15 @@
-#Usage
+# Usage
 
 This file contains information regarding the usage of easytf.
 
-###easytf.RNN (Recurrent neural networks)
+## easytf.RNN (Recurrent neural networks)
 
 Included in this class:
 - single directional and bi-directional configurations.
 - tanh, LSTM, GRU, and LSTMP cell architectures.
 - soft attention mechanisms.
 
-initialisation:
+### initialisation:
 
 ```Python
 network=RNN(training_data, training_labels, validation_data, validation_labels, network_save_filename, minimum_epoch = 5, maximum_epoch = 10, n_hidden = [100,100], n_classes = 2, cell_type = 'LSTMP', configuration = ''B', attenion_number = 2, init_method = 'zero', truncated = 1000, optimizer ='Adam', learning_rate = 0.003, display_train_loss ='True', display_accuracy='True')
@@ -55,17 +55,8 @@ network=RNN(training_data, training_labels, validation_data, validation_labels, 
 
 `display_accuracy` :	whether or not to display the accuracies
 
+```network.create()```
 
-	
-
-
-
-
-
-
-functions
-
-RNN.create()
 
 
 ###easytf.CNN (Convolutional neural networks)
