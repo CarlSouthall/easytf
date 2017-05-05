@@ -55,7 +55,20 @@ network=RNN(training_data, training_labels, validation_data, validation_labels, 
 
 `display_accuracy` :	whether or not to display the accuracies
 
-`network.create()`
+### functions
+
+```
+network.create()
+```
+
+```
+network.train()
+```
+
+```
+network.implement()
+```
+
 
 
 
@@ -71,7 +84,7 @@ network=RNN(training_data, training_labels, validation_data, validation_labels, 
 
 
 
-#####Examples
+### Examples
 
 ```Python
 from ADTLib.models import ADTBDRNN
