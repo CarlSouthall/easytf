@@ -9,7 +9,7 @@ Included in this class:
 - tanh, LSTM, GRU, and LSTMP cell architectures.
 - soft attention mechanisms.
 
-### initialisation:
+### Initialization
 
 ```Python
 network=RNN(training_data, training_labels, validation_data, validation_labels, network_save_filename, minimum_epoch = 5, maximum_epoch = 10, n_hidden = [100,100], n_classes = 2, cell_type = 'LSTMP', configuration = ''B', attenion_number = 2, init_method = 'zero', truncated = 1000, optimizer ='Adam', learning_rate = 0.003, display_train_loss ='True', display_accuracy='True')
@@ -55,7 +55,7 @@ network=RNN(training_data, training_labels, validation_data, validation_labels, 
 
 `display_accuracy` :	whether or not to display the accuracies
 
-### functions
+### Functions
 
 ```
 network.create()
@@ -74,19 +74,35 @@ out=network.implement(Test_data)
 Runs the test data through the network.
 
 
-
-
-
-### easytf.CNN (Convolutional neural networks)
+## easytf.CNN (Convolutional neural networks)
 
 Included in this class:
 - 2d convolution
 -3d convoliution
 
-Initilization:
+### Initialization
 
+```Python
 network=RNN(training_data, training_labels, validation_data, validation_labels, network_save_filename, minimum_epoch=5, maximum_epoch=100, learning_rate=0.003, n_classes=2, optimizer='Adam', conv_filter_shapes=[[5,5,1,5],[5,5,5,10]], conv_strides=[[1,1,1,1],[1,1,1,1]], pool_window_sizes=[1,1,2,1],[1,1,2,1]], fc_l)
+```
 
+### Functions
+
+```
+network.create()
+```
+Creates the network using the given parameters.
+
+```
+network.train()
+```
+Trains the network using the given training and validation data.
+
+```
+out=network.implement(Test_data)
+```
+
+Runs the test data through the network.
 
 
 ### Examples
