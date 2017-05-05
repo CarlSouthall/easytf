@@ -87,7 +87,6 @@ Included in this class:
 
 ### Initialization
 
-def __init__(self,features,targ,val,val_targ,minibatch_nos,filename,minimum_epoch=0,maximum_epoch=1,learning_rate=0.003,n_classes=2,optimizer='Adam',conv_filter_shapes=[[5,5,1,5],[5,5,5,10]],conv_strides=[[1,1,1,1],[1,1,1,1]],pool_window_sizes=[[1,1,2,1],[1,1,2,1]],fc_layer_sizes=[100],dropout=0.25,pad='SAME',display_accuracy='True',display_train_loss='True',frames_either_side=[[2,2],[0,0]],input_stride_size=[1,1025],dim='2d'):
 
 
 ```Python
