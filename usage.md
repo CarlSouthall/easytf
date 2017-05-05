@@ -89,7 +89,7 @@ Included in this class:
 
 
 ```Python
-network =	CNN(training_data, training_labels, validation_data, validation_labels, mini_batch_locations, network_save_filename, minimum_epoch = 5, maximum_epoch = 100, learning_rate = 0.003, n_classes = 2, optimizer = 'Adam', conv_filter_shapes = [[5,5,1,5],[5,5,5,10]], conv_strides = [[1,1,1,1],[1,1,1,1]], pool_window_sizes=[1,1,2,1],[1,1,2,1]], fc_layer_size = [100], dropout = 0.25, pad = 'SAME', display_accuracy='True', display_train_loss='True', frames_either_side = [[2,2],[0,0]], input_stride_size = [1, 1025], dim = '2d')
+network = CNN(training_data, training_labels, validation_data, validation_labels, mini_batch_locations, network_save_filename, minimum_epoch = 5, maximum_epoch = 100, learning_rate = 0.003, n_classes = 2, optimizer = 'Adam', conv_filter_shapes = [[5,5,1,5],[5,5,5,10]], conv_strides = [[1,1,1,1],[1,1,1,1]], pool_window_sizes=[1,1,2,1],[1,1,2,1]], fc_layer_size = [100], dropout = 0.25, pad = 'SAME', display_accuracy='True', display_train_loss='True', frames_either_side = [[2,2],[0,0]], input_stride_size = [1, 1025], dim = '2d')
 ```
 
 `training_data`  : training data features used to train the network [dim1 x dim2] 
