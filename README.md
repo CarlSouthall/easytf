@@ -26,7 +26,8 @@ For further install information see the [install](https://github.com/CarlSouthal
 
 ## Algorithms
 
-CNN - Convolutional neural networks - includes both 2d and 3d usage. <space><space>
+CNN - Convolutional neural networks - includes both 2d and 3d usage.
+
 RNN - Recurrent neural networks - includes tanh, LSTM, LSTMP and GRU cells, single directional and bi-directional configurations and soft attention output layers.
 
 ## Usage
@@ -44,7 +45,7 @@ RNN1.train()
 out=RNN1.implement(test_data)
 
 ```
-for further usage details see the [usage](https://github.com/CarlSouthall/TFCS/blob/master/usage.md) page.
+For further usage details see the [usage](https://github.com/CarlSouthall/TFCS/blob/master/usage.md) page.
 
 ##Help
 
