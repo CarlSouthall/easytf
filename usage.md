@@ -15,7 +15,7 @@ initialisation:
 network=RNN(training_data, training_labels, validation_data, validation_labels, network_save_filename, minimum_epoch = 5, maximum_epoch = 10, n_hidden = [100,100], n_classes = 2, cell_type = 'LSTMP', configuration = ''B', attenion_number = 2, init_method = 'zero', truncated = 1000, optimizer ='Adam', learning_rate = 0.003, display_train_loss ='True', display_accuracy='True')
 ```
 
-'training_data'   training data features used to train the network [dim1 x dim2] 
+`training_data`  training data features used to train the network [dim1 x dim2] 
 training_labels : 	training labels corresponding to training_data [dim1 x dim2]
 validation_data : 	validation data features used to validate the network [dim1 x dim2]
 validation_labels : 	validation labels corresponding to validation_data [dim1 x dim2]
