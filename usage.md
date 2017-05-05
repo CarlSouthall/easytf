@@ -15,26 +15,26 @@ initialisation:
 network=RNN(training_data, training_labels, validation_data, validation_labels, network_save_filename, minimum_epoch = 5, maximum_epoch = 10, n_hidden = [100,100], n_classes = 2, cell_type = 'LSTMP', configuration = ''B', attenion_number = 2, init_method = 'zero', truncated = 1000, optimizer ='Adam', learning_rate = 0.003, display_train_loss ='True', display_accuracy='True')
 ```
 
-`training_data`  training data features used to train the network [dim1 x dim2] 
-training_labels : 	training labels corresponding to training_data [dim1 x dim2]
-validation_data : 	validation data features used to validate the network [dim1 x dim2]
-validation_labels : 	validation labels corresponding to validation_data [dim1 x dim2]
-network_save_filename:	 the filename named used to save the network configuration and parameters.
-minimum_epoch:	the minimum number of training epochs.
-maximum_epoch: 	the maximum number of training epochs.
-n_hidden: 		the number of layers in each hidden layer 
-n_layers:		the number of layers (could remove this)
-n_classes:	the number of output classes / neurons in the output layer.
-cell_type:		the cell architectures used for the hidden layers
-configuration:		the configuration used
-attention_number:     the number of soft attention connections 
-dropout:		the dropout probability.
-init_method:	the initialization technique used.
-truncated: 	the truncation number used in truncated back_propagation
-optimizer:		the optimizer used
-learning_rate: 	the learning rate used
-display_train_loss: 	to whether or not to display the train 	
-display_accuracy:	whether or not to display the accuracies
+`training_data`  : training data features used to train the network [dim1 x dim2] 
+`training_labels` : 	training labels corresponding to training_data [dim1 x dim2]
+`validation_data` : 	validation data features used to validate the network [dim1 x dim2]
+`validation_labels` : 	validation labels corresponding to validation_data [dim1 x dim2]
+`network_save_filename` :	 the filename named used to save the network configuration and parameters.
+`minimum_epoch` :	the minimum number of training epochs.
+`maximum_epoch` : 	the maximum number of training epochs.
+`n_hidden`: 		the number of layers in each hidden layer 
+`n_layers` :		the number of layers (could remove this)
+`n_classes` :	the number of output classes / neurons in the output layer.
+`cell_type` :		the cell architectures used for the hidden layers
+`configuration` :		the configuration used
+`attention_number` :     the number of soft attention connections 
+`dropout` :		the dropout probability.
+`init_method` :	the initialization technique used.
+`truncated` : 	the truncation number used in truncated back_propagation
+`optimizer` :		the optimizer used
+`learning_rate` : 	the learning rate used
+`display_train_loss` : 	to whether or not to display the train 	
+`display_accuracy` :	whether or not to display the accuracies
 
 	
 
