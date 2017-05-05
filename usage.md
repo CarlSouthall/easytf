@@ -83,7 +83,7 @@ Runs the test data through the network.
 Included in this class:
 - 2d convolution
 
--3d convolution
+- 3d convolution
 
 ### Initialization
 
