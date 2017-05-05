@@ -6,9 +6,9 @@ package_data = ['']
              
 
 setup(
-  name = 'TFCS',
+  name = 'easytf',
   packages=find_packages(exclude=[]), 
-  version = '0.1',
+  version = '0.9',
   description = 'Tensorflow CS',
   author = 'Carl Southall',
   author_email = 'c-southall@live.co.uk',
@@ -23,6 +23,6 @@ setup(
                  'Topic :: Scientific/Engineering :: Artificial Intelligence'],
    
     install_requires=['numpy','tensorflow'],
-    package_data={'ADTLib': package_data},
+    package_data={'easytf': package_data},
      
 )

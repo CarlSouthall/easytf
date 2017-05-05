@@ -1,0 +1,8 @@
+setup.cfg
+setup.py
+easytf/__init__.py
+easytf.egg-info/PKG-INFO
+easytf.egg-info/SOURCES.txt
+easytf.egg-info/dependency_links.txt
+easytf.egg-info/requires.txt
+easytf.egg-info/top_level.txt

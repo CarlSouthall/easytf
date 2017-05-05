@@ -1,0 +1,16 @@
+Metadata-Version: 1.1
+Name: easytf
+Version: 0.9
+Summary: Tensorflow CS
+Home-page: https://github.com/CarlSouthall/ADTLib
+Author: Carl Southall
+Author-email: c-southall@live.co.uk
+License: BSD
+Download-URL: https://github.com/CarlSouthall/ADTLib
+Description: UNKNOWN
+Keywords: Tensorflow,High-level
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 2.7
+Classifier: License :: OSI Approved :: BSD License
+Classifier: License :: Free for non-commercial use
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
