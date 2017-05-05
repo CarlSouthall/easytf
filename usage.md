@@ -1,52 +1,63 @@
 #Usage
 
-This file contains infromation regarding using the algorithms within the toolbox.
+This file contains information regarding the usage of easytf.
 
-##ADTBDRNN
+###easytf.RNN (Recurrent neural networks)
 
-ADT architecture defined in [1].
+Included in this class:
+- single directional and bi-directional configurations.
+- tanh, LSTM, GRU, and LSTMP cell architectures.
+- soft attention mechanisms.
 
-Input: wavfiles names along with control parameters
+initialisation:
 
-Output: kick, snare, hihat onsets in seconds.
-
-###Command line
-
-    ADTBDRNN [-h] [-os {time,instrument}] [-od OD] [-p {yes,no}] [-ot {yes,no}] [I [I ...]]   
-    
-| Flag   | Name           |   Description                                                       | Default setting  |
-| ----  |  -------  | ----- |   ------   |   
-| -h     |  help             |   displays help file                                              | n/a     |                                           
-| -os    |   output_sort     |   defines configuration of the output                            | time |
-| -od    |   output_dir      |   location output textfiles are saved                            | current| 
-| -p     |   print           |   defines whether the output is displayed in the terminal or not | yes|
-| -ot    |   output_text     |   defines whether the ouput is stored in a textfile or not       | yes|
-| I      |   input_file_names|   single or list of wav file names seperated by spaces                     |  n/a |
-
-#####Examples
-
-    ADTBDRNN DrumFile.wav
-
-  Output ordered by time printed to a text file in current directory and printed in terminal
-  
-    ADTBDRNN  -os instrument -od Desktop -p no -ot yes Drum.wav DrumFile1.wav DrumFile2.wav
-  
-  Output ordered by instrument printed to a text file on the desktop.
-
-  
-###Python function
 ```Python
-ADTBDRNN(TrackNames, out_sort='time',ret='yes', out_text='no', savedir='current',close_error=0.05,lambd=[9.7,9.9,4.9])
-```
-| Name           |   Description                                                       | Default setting  |
-|  -------  | ----- |   ------   |   
-|       TrackNames      | Drum.wav files, must be in a list if more than one.                                        | n/a     |                                           
-|   out_sort     |   defines configuration of the output                              | time |
-|   savedir      |   location output textfiles are saved                            | current| 
-|   ret           |   defines whether the output is returned from the function      | yes|
-|   out_text     |   defines whether the ouput is stored in a textfile or not       | no|
-|   close_error|     Maximum distance between two onsets without onsets being combined, in seconds.                 |  0.05 |
-|   lambd|     Value used for each instrument within the peak picking stage                |  9.7 9.9 9.4 |
+	network=RNN(training_data, training_labels, validation_data, validation_labels, network_save_filename, minimum_epoch = 5, maximum_epoch = 10, n_hidden = [100,100], n_classes = 2, cell_type = 'LSTMP', configuration = ''B', attenion_number = 2, init_method = 'zero', truncated = 1000, optimizer ='Adam', learning_rate = 0.003, display_train_loss ='True', display_accuracy='True')
+'''
+	training_data :	  training data features used to train the network [dim1 x dim2] 
+	training_labels : 	training labels corresponding to training_data [dim1 x dim2]
+	validation_data : 	validation data features used to validate the network [dim1 x dim2]
+	validation_labels : 	validation labels corresponding to validation_data [dim1 x dim2]
+	network_save_filename:	 the filename named used to save the network configuration and parameters.
+	minimum_epoch:	the minimum number of training epochs.
+	maximum_epoch: 	the maximum number of training epochs.
+	n_hidden: 		the number of layers in each hidden layer 
+	n_layers:		the number of layers (could remove this)
+	n_classes:	the number of output classes / neurons in the output layer.
+	cell_type:		the cell architectures used for the hidden layers
+	configuration:		the configuration used
+	attention_number:     the number of soft attention connections 
+	dropout:		the dropout probability.
+	init_method:	the initialization technique used.
+	truncated: 	the truncation number used in truncated back_propagation
+	optimizer:		the optimizer used
+	learning_rate: 	the learning rate used
+	display_train_loss: 	to whether or not to display the train 	
+	display_accuracy:	whether or not to display the accuracies
+
+	
+
+
+
+
+
+
+functions
+
+RNN.create()
+
+
+###easytf.CNN (Convolutional neural networks)
+
+Included in this class:
+- 2d convolution
+-3d convoliution
+
+Initilization:
+
+network=RNN(training_data, training_labels, validation_data, validation_labels, network_save_filename, minimum_epoch=5, maximum_epoch=100, learning_rate=0.003, n_classes=2, optimizer='Adam', conv_filter_shapes=[[5,5,1,5],[5,5,5,10]], conv_strides=[[1,1,1,1],[1,1,1,1]], pool_window_sizes=[1,1,2,1],[1,1,2,1]], fc_l)
+
+
 
 #####Examples
 
