@@ -55,11 +55,11 @@ network=RNN(training_data, training_labels, validation_data, validation_labels, 
 
 `display_accuracy` :	whether or not to display the accuracies
 
-```network.create()```
+`network.create()`
 
 
 
-###easytf.CNN (Convolutional neural networks)
+### easytf.CNN (Convolutional neural networks)
 
 Included in this class:
 - 2d convolution
