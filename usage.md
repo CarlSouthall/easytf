@@ -12,7 +12,7 @@ Included in this class:
 ### Initialization
 
 ```Python
-network = RNN(training_data, training_labels, validation_data, validation_labels, network_save_filename, minimum_epoch = 5, maximum_epoch = 10, n_hidden = [100,100], n_classes = 2, cell_type = 'LSTMP', configuration = ''B', attenion_number = 2, init_method = 'zero', truncated = 1000, optimizer ='Adam', learning_rate = 0.003, display_train_loss ='True', display_accuracy='True')
+network = RNN(training_data, training_labels, validation_data, validation_labels, network_save_filename, minimum_epoch = 5, maximum_epoch = 10, n_hidden = [100,100], n_classes = 2, cell_type = 'LSTMP', configuration = ''B', attention_number = 2, init_method = 'zero', truncated = 1000, optimizer ='Adam', learning_rate = 0.003, display_train_loss ='True', display_accuracy='True')
 ```
 
 `training_data`  : training data features used to train the network [dim1 x dim2] 
@@ -89,7 +89,7 @@ Included in this class:
 
 
 ```Python
-network = CNN(training_data, training_labels, validation_data, validation_labels, mini_batch_locations, network_save_filename, minimum_epoch = 5, maximum_epoch = 100, learning_rate = 0.003, n_classes = 2, optimizer = 'Adam', conv_filter_shapes = [[5,5,1,5],[5,5,5,10]], conv_strides = [[1,1,1,1],[1,1,1,1]], pool_window_sizes=[1,1,2,1],[1,1,2,1]], fc_layer_size = [100], dropout = 0.25, pad = 'SAME', display_accuracy='True', display_train_loss='True', frames_either_side = [[2,2],[0,0]], input_stride_size = [1, 1025], dim = '2d')
+network = CNN(training_data, training_labels, validation_data, validation_labels, mini_batch_locations, network_save_filename, minimum_epoch = 5, maximum_epoch = 100, learning_rate = 0.003, n_classes = 2, optimizer = 'Adam', conv_filter_shapes = [[5,5,1,5],[5,5,5,10]], conv_strides = [[1,1,1,1],[1,1,1,1]], pool_window_sizes=[1,1,2,1],[1,1,2,1]], fc_layer_size = [100], dropout = 0.25, pad = 'SAME', display_accuracy='True', display_train_loss='True', frames_either_side = [[2,2],[0,0]], input_stride_size = [1, 1025])
 ```
 
 `training_data`  : training data features used to train the network [dim1 x dim2] 
@@ -106,32 +106,31 @@ network = CNN(training_data, training_labels, validation_data, validation_labels
 
 `maximum_epoch` : 	the maximum number of training epochs.
 
-`n_hidden`: 		the number of layers in each hidden layer.
-
-`n_layers` :		the number of layers (could remove this)
+`learning_rate` : 	the learning rate used.
 
 `n_classes` :	the number of output classes / neurons in the output layer.
 
-`cell_type` :		the cell architectures used for the hidden layers
+`optimizer` :		the optimizer used
 
-`configuration` :		the configuration used
+`conv_filter_shapes` 	: 	the filter shape sizes used in each convolutional layer.
 
-`attention_number` :     the number of soft attention connections 
+`conv_strides`	: 	the stride lengths used in each convolutional layer.
+
+`pool_window_sizes` :	the size of the windows used in the max pooling layers.
+
+`fc_layer_size`	: 	number of neurons used in each of the fully-connected layers.
 
 `dropout` :		the dropout probability.
 
 `init_method` :	the initialization technique used.
 
-`truncated` : 	the truncation number used in truncated back_propagation
+`display_train_loss` : 	to whether or not to display the train.
 
-`optimizer` :		the optimizer used
+`display_accuracy` :	whether or not to display the accuracies.
 
-`learning_rate` : 	the learning rate used
+`frames_either_side`	:	the frames either side included in the input features.
 
-`display_train_loss` : 	to whether or not to display the train 	
-
-`display_accuracy` :	whether or not to display the accuracies
-
+`input_stride_size`	:	the stride length used in the input features, determines whether 2d or 3d convolution is implement.
 
 
 ### Functions
