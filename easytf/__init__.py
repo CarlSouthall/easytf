@@ -12,18 +12,22 @@ import tensorflow as tf
 import os
 from tensorflow.contrib import rnn
 
+
 class CNN:
     
-    def __init__(self,features,targ,val,val_targ,minibatch_nos,filename,minimum_epoch=0,maximum_epoch=1,learning_rate=0.003,n_classes=2,optimizer='Adam',conv_filter_shapes=[[5,5,1,5],[5,5,5,10]],conv_strides=[[1,1,1,1],[1,1,1,1]],pool_window_sizes=[[1,1,2,1],[1,1,2,1]],fc_layer_sizes=[100],dropout=0.25,pad='SAME',display_accuracy='True',display_train_loss='True',frames_either_side=[[2,2],[0,0]],input_stride_size=[1,1025],dim='2d'):
-        self.dim=dim
+    def __init__(self,training_data, training_labels, validation_data, validation_labels, mini_batch_locations, network_save_filename, minimum_epoch = 5, maximum_epoch = 10, learning_rate = 0.003, n_classes = 2, optimizer='Adam', conv_filter_shapes=[[5,5,1,5],[5,5,5,10]], conv_strides=[[1,1,1,1],[1,1,1,1]], pool_window_sizes=[[1,1,2,1],[1,1,2,1]], fc_layer_sizes=[100], dropout=0.25, pad='SAME', display_accuracy='True', display_train_loss='True', frames_either_side=[[2,2],[0,0]], input_stride_size=[1,1024]):
+        if len(input_stride_size)==2:
+            self.dim='2d'
+        elif len(input_stride_size)==3:
+            self.dim='3d'
         self.frames_either_side=frames_either_side 
         self.input_stride_size=input_stride_size
-        self.features=self.zero_pad(features)
-        self.val=self.zero_pad(val)
-        self.targ=targ      
-        self.val_targ=val_targ
-        self.minibatch_nos=minibatch_nos
-        self.filename=filename
+        self.features=self.zero_pad(training_data)
+        self.val=self.zero_pad(validation_data)
+        self.targ=training_labels     
+        self.val_targ=validation_labels
+        self.minibatch_nos=mini_batch_locations
+        self.filename=network_save_filename
         self.minimum_epoch=minimum_epoch
         self.maximum_epoch=maximum_epoch
         self.learning_rate=learning_rate
@@ -305,17 +309,18 @@ class CNN:
                         elif self.dim=='3d':
                             self.output[i][self.locations[self.counter-self.batch_size+z][0],self.locations[self.counter-self.batch_size+z][1],self.locations[self.counter-self.batch_size+z][2]]=batch_out[z]
             return self.output
- 
+
+
 class RNN:
     
-     def __init__(self,features,targ,val,val_targ,filename,n_hidden=[100,100],n_layers=2,cell_type='LSTMP',dropout=0.25,init_method='zero',truncated=1000,optimizer='Adam',learning_rate=0.003,n_classes=2, minimum_epoch=0,maximum_epoch=1,display_train_loss='True',configuration='R', attention_number=2,display_accuracy='True'):
-         self.features=features
-         self.targ=targ
-         self.val=val
-         self.val_targ=val_targ
-         self.filename=filename
+     def __init__(self, training_data, training_labels, validation_data, validation_labels, network_save_filename, minimum_epoch=5, maximum_epoch=10, n_hidden=[100,100], n_classes=2, cell_type='LSTMP', configuration='B', attention_number=0, dropout=0.25, init_method='zero', truncated=1000, optimizer='Adam', learning_rate=0.003 ,display_train_loss='True', display_accuracy='True'):
+         self.features=training_data
+         self.targ=training_labels
+         self.val=validation_data
+         self.val_targ=validation_labels
+         self.filename=network_save_filename
          self.n_hidden=n_hidden
-         self.n_layers=n_layers
+         self.n_layers=len(self.n_hidden)
          self.cell_type=cell_type
          self.dropout=dropout
          self.configuration=configuration

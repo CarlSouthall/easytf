@@ -8,7 +8,7 @@ package_data = ['']
 setup(
   name = 'easytf',
   packages=find_packages(exclude=[]), 
-  version = '0.9',
+  version = '1.0',
   description = 'Tensorflow CS',
   author = 'Carl Southall',
   author_email = 'c-southall@live.co.uk',
