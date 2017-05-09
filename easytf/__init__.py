@@ -192,8 +192,8 @@ class CNN:
       self.epoch=0
       self.prev_val_loss=100
       self.val_loss=99
-      self.val_output_dim1=self.val.shape[0]/self.input_stride_size[0]
-      self.val_output_dim2=self.val.shape[1]/self.input_stride_size[1]
+      self.val_output_dim1=int(self.val.shape[0]/self.input_stride_size[0])
+      self.val_output_dim2=int(self.val.shape[1]/self.input_stride_size[1])
       if self.dim=='2d':
           self.val_locations=self.locations_create([self.val_output_dim1,self.val_output_dim2])
       elif self.dim=='3d':
@@ -313,11 +313,12 @@ class CNN:
 
 class RNN:
     
-     def __init__(self, training_data, training_labels, validation_data, validation_labels, network_save_filename, minimum_epoch=5, maximum_epoch=10, n_hidden=[100,100], n_classes=2, cell_type='LSTMP', configuration='B', attention_number=0, dropout=0.25, init_method='zero', truncated=1000, optimizer='Adam', learning_rate=0.003 ,display_train_loss='True', display_accuracy='True'):
+     def __init__(self, training_data, training_labels, validation_data, validation_labels, mini_batch_locations, network_save_filename, minimum_epoch=5, maximum_epoch=10, n_hidden=[100,100], n_classes=2, cell_type='LSTMP', configuration='B', attention_number=0, dropout=0.25, init_method='zero', truncated=1000, optimizer='Adam', learning_rate=0.003 ,display_train_loss='True', display_accuracy='True'):
          self.features=training_data
          self.targ=training_labels
          self.val=validation_data
          self.val_targ=validation_labels
+         self.mini_batch_locations=mini_batch_locations
          self.filename=network_save_filename
          self.n_hidden=n_hidden
          self.n_layers=len(self.n_hidden)
@@ -332,12 +333,12 @@ class RNN:
          self.minimum_epoch=minimum_epoch
          self.maximum_epoch=maximum_epoch
          self.display_train_loss=display_train_loss
-         self.n_input = len(self.features[0,0])
-         self.num_batch=len(self.features)
-         self.val_num_batch=len(self.val)
-         self.n_steps = len(self.features[0])
+         self.num_batch=len(self.mini_batch_locations)
+         self.batch_size=self.mini_batch_locations.shape[1]
          self.attention_number=attention_number
-         self.display_accuracy=display_accuracy 
+         self.display_accuracy=display_accuracy
+         self.batch=np.zeros((self.batch_size,self.features.shape[1]))
+         self.batch_targ=np.zeros((self.batch_size,self.targ.shape[2]))
         
      def cell_create(self):
     	  
@@ -373,8 +374,8 @@ class RNN:
       
        tf.reset_default_graph()
        self.weight_bias_init()
-       self.x_ph = tf.placeholder("float32", [1, self.n_steps, self.n_input])
-       self.y_ph = tf.placeholder("float32", [self.n_steps, self.n_classes])
+       self.x_ph = tf.placeholder("float32", [1, self.batch.shape[0], self.batch.shape[1]])
+       self.y_ph = tf.placeholder("float32", self.batch_targ.shape)
        self.seq=tf.constant(self.truncated,shape=[1]) 
        self.dropout_ph = tf.placeholder("float32")
        self.fw_cell=self.cell_create()
@@ -382,7 +383,7 @@ class RNN:
            self.outputs, self.states= tf.nn.dynamic_rnn(self.fw_cell, self.x_ph,
                                              sequence_length=self.seq,dtype=tf.float32)
            self.outputs_zero_padded=tf.pad(self.outputs,[[0,0],[self.attention_number,0],[0,0]])
-           self.RNNout1=tf.stack([tf.reshape(self.outputs_zero_padded[:,g:g+(self.attention_number+1)],[self.n_hidden[(len(self.n_hidden)-1)]*((self.attention_number)+1)]) for g in range(self.n_steps)])
+           self.RNNout1=tf.stack([tf.reshape(self.outputs_zero_padded[:,g:g+(self.attention_number+1)],[self.n_hidden[(len(self.n_hidden)-1)]*((self.attention_number)+1)]) for g in range(self.batch_size)])
            self.presoft=tf.matmul(self.RNNout1, self.weights) + self.biases
        elif self.configuration=='B':
            self.bw_cell=self.cell_create()
@@ -390,8 +391,8 @@ class RNN:
                                          sequence_length=self.seq,dtype=tf.float32)
            self.outputs_zero_padded1=tf.pad(self.outputs[0],[[0,0],[self.attention_number,self.attention_number],[0,0]])
            self.outputs_zero_padded2=tf.pad(self.outputs[1],[[0,0],[self.attention_number,self.attention_number],[0,0]])
-           self.RNNout1=tf.stack([tf.reshape(self.outputs_zero_padded1[:,g:g+((self.attention_number*2)+1)],[self.n_hidden[(len(self.n_hidden)-1)]*((self.attention_number*2)+1)]) for g in range(self.n_steps)]) 
-           self.RNNout2=tf.stack([tf.reshape(self.outputs_zero_padded2[:,g:g+((self.attention_number*2)+1)],[self.n_hidden[(len(self.n_hidden)-1)]*((self.attention_number*2)+1)]) for g in range(self.n_steps)])
+           self.RNNout1=tf.stack([tf.reshape(self.outputs_zero_padded1[:,g:g+((self.attention_number*2)+1)],[self.n_hidden[(len(self.n_hidden)-1)]*((self.attention_number*2)+1)]) for g in range(self.batch_size)]) 
+           self.RNNout2=tf.stack([tf.reshape(self.outputs_zero_padded2[:,g:g+((self.attention_number*2)+1)],[self.n_hidden[(len(self.n_hidden)-1)]*((self.attention_number*2)+1)]) for g in range(self.batch_size)])
            self.presoft=tf.matmul(self.RNNout1, self.weights['1']) + tf.matmul(self.RNNout2, self.weights['2'])+self.biases
        self.pred=tf.nn.softmax(self.presoft)
        self.cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=self.presoft, labels=self.y_ph))
@@ -405,6 +406,16 @@ class RNN:
        self.accuracy = tf.reduce_mean(tf.cast(self.correct_pred, tf.float32))
        self.init = tf.global_variables_initializer()
        self.saver = tf.train.Saver()
+       
+     def locations_create(self,size):
+         self.locations=range(size)
+         self.dif=size%self.batch_size
+         if self.dif>0:
+             for i in xrange(self.batch_size-self.dif):
+                 self.locations=np.append(self.locations,0)
+         self.location_new=np.reshape(self.locations,[-1,self.batch_size])     
+         return self.location_new
+    
       
      def train(self):
        
@@ -413,11 +424,15 @@ class RNN:
        self.epoch=0
        self.prev_val_loss=100
        self.val_loss=99
+       self.val_locations=self.locations_create(len(self.val))
        with tf.Session() as sess:
          sess.run(self.init)
          while self.epoch < self.minimum_epoch or self.prev_val_loss > self.val_loss:
              for i in xrange(self.num_batch):
-                sess.run(self.optimize, feed_dict={self.x_ph: np.expand_dims(self.features[i],0), self.y_ph: self.targ[i],self.dropout_ph:self.dropout})                                    
+                for j in xrange(self.batch_size):
+                     self.batch[j]=self.features[self.mini_batch_locations[i,j]]
+                     self.batch_targ[j]=self.targ[self.mini_batch_locations[i,j]]
+                sess.run(self.optimize, feed_dict={self.x_ph: np.expand_dims(self.batch,0), self.y_ph: self.batch_targ,self.dropout_ph:self.dropout})                                    
                 self.iteration+=1
              self.epoch+=1   
              print("Epoch " + str(self.epoch))
@@ -427,21 +442,27 @@ class RNN:
                  if self.display_accuracy=='True':
                      self.acc_train=[]
                      self.acc_val=[]
-                 for i in xrange(self.val_num_batch):
+                 for i in xrange(len(self.val_locations)):
+                     for j in xrange(self.batch_size):
+                             self.batch[j]=self.features[self.val_locations[i,j]]
+                             self.batch_targ[j]=self.targ[self.val_locations[i,j]]
                      if self.display_accuracy=='True':
-                         vl,va=sess.run((self.cost,self.accuracy), feed_dict={self.x_ph: np.expand_dims(self.val[i],0), self.y_ph: self.val_targ[i], self.dropout_ph:1})
+                         vl,va=sess.run((self.cost,self.accuracy), feed_dict={self.x_ph: np.expand_dims(self.batch,0), self.y_ph: self.batch_targ, self.dropout_ph:1})
                          self.loss_val.append(vl)
                          self.acc_val.append(va)
                      else:
-                         self.loss_val.append(sess.run(self.cost, feed_dict={self.x_ph: np.expand_dims(self.val[i],0), self.y_ph: self.val_targ[i], self.dropout_ph:1}))
+                         self.loss_val.append(sess.run(self.cost, feed_dict={self.x_ph: np.expand_dims(self.batch,0), self.y_ph: self.batch_targ, self.dropout_ph:1}))
                  if  self.display_train_loss=='True': 
-                     for i in xrange(self.num_batch): 
+                     for i in xrange(self.num_batch):
+                         for j in xrange(self.batch_size):
+                             self.batch[j]=self.features[self.mini_batch_locations[i,j]]
+                             self.batch_targ[j]=self.targ[self.mini_batch_locations[i,j]]
                          if self.display_accuracy=='True':
-                             tl,ta=sess.run((self.cost,self.accuracy), feed_dict={self.x_ph: np.expand_dims(self.features[i],0), self.y_ph: self.targ[i], self.dropout_ph:1})
+                             tl,ta=sess.run((self.cost,self.accuracy), feed_dict={self.x_ph: np.expand_dims(self.batch,0), self.y_ph: self.batch_targ, self.dropout_ph:1})
                              self.loss_train.append(tl)
                              self.acc_train.append(ta)
                          else:
-                             self.loss_train.append(sess.run(self.cost, feed_dict={self.x_ph: np.expand_dims(self.features[i],0), self.y_ph: self.targ[i], self.dropout_ph:1}))
+                             self.loss_train.append(sess.run(self.cost, feed_dict={self.x_ph: np.expand_dims(self.batch,0), self.y_ph: self.batch_targ, self.dropout_ph:1}))
                         
                      print("Train Minibatch Loss " + "{:.6f}".format(np.mean(np.array(self.loss_train))))
                      if self.display_accuracy=='True':
@@ -460,42 +481,21 @@ class RNN:
      def implement(self,data):
          with tf.Session() as sess:
              self.saver.restore(sess, self.save_location+'/'+self.filename)
-             oh=[];
+             self.test_out=[];
              for i in xrange(len(data)):
-                 test_len = len(data[i])
-                 NoBS=int(np.floor(len(data[i])/self.n_steps))
+                 self.test_len=len(data[i])
+                 self.test_locations=self.locations_create(self.test_len)
+                 for k in xrange(len(self.test_locations)):
+                    for j in xrange(self.batch_size):
+                        self.batch[j]=self.features[self.test_locations[k,j]]
+                        self.batch_targ[j]=self.targ[self.test_locations[k,j]]
+                    if k == 0:
+                        self.test_out.append(sess.run(self.pred, feed_dict={self.x_ph: np.expand_dims(self.batch,0),self.dropout_ph:1}))                                    
+                    elif k > 0:
+                        self.test_out_2=sess.run(self.pred, feed_dict={self.x_ph: np.expand_dims(self.batch,0),self.dropout_ph:1})
+                        self.test_out[i]=np.concatenate((self.test_out[i],self.test_out_2),axis=0)
+                 self.test_out[i]=self.test_out[i][:self.test_len]
                 
-                 if NoBS == 0:
-                    e=np.zeros((1,self.n_steps-test_len,len(data[i][0])))
-                    f=np.concatenate((np.expand_dims(data[i],0),e),axis=1)
-                   
-                    oh.append(sess.run(self.pred, feed_dict={self.x_ph: f,                                           
-                                                 self.dropout_ph:1}))
-                
-                    oh[i]=oh[i][:test_len] 
-                   
-                 else:
-                    oh.append(sess.run(self.pred, feed_dict={self.x_ph: np.expand_dims(data[i][:self.n_steps],0),                            
-                                                 self.dropout_ph:1}))
-                                              
-                    for j in xrange(NoBS-1):
-                    
-                         oh1 = sess.run(self.pred, feed_dict={self.x_ph: np.expand_dims(data[i][(j+1)*self.n_steps:(j+2)*self.n_steps]),                                                
-                                                     dropoutp:1})
-                                                    
-                         oh[i]=np.concatenate((oh[i],oh1),axis=0)
-                   
-                    e=np.zeros((1,self.n_steps*(NoBS+1)-test_len,len(data[i][0])))
-                    f=np.concatenate((np.expand_dims(data[i][self.n_steps*(NoBS):len(data[i]-1)],0),e),axis=1)
-                   
-                    oh1 = sess.run(self.pred, feed_dict={self.x_ph: f,                                        
-                                             self.dropout_ph:1})
-                                            
-                    oh[i]=np.concatenate((oh[i],oh1),axis=0)
-                   
-                    oh[i]=oh[i][:test_len]
-                             
-             return oh
             
      def train_output(self,output_layers='True'):
          train_output=[]

@@ -12,7 +12,7 @@ Included in this class:
 ### Initialization
 
 ```Python
-network = RNN(training_data, training_labels, validation_data, validation_labels, network_save_filename, minimum_epoch = 5, maximum_epoch = 10, n_hidden = [100,100], n_classes = 2, cell_type = 'LSTMP', configuration = ''B', attention_number = 0, dropout = 0.25, init_method = 'zero', truncated = 1000, optimizer ='Adam', learning_rate = 0.003, display_train_loss ='True', display_accuracy='True')
+network = RNN(training_data, training_labels, validation_data, validation_labels, mini_batch_locations, network_save_filename, minimum_epoch = 5, maximum_epoch = 10, n_hidden = [100,100], n_classes = 2, cell_type = 'LSTMP', configuration = ''B', attention_number = 0, dropout = 0.25, init_method = 'zero', truncated = 1000, optimizer ='Adam', learning_rate = 0.003, display_train_loss ='True', display_accuracy='True')
 ```
 
 `training_data`  : training data features used to train the network [dim1 x dim2] 
@@ -22,6 +22,8 @@ network = RNN(training_data, training_labels, validation_data, validation_labels
 `validation_data` : 	validation data features used to validate the network [dim1 x dim2]
 
 `validation_labels` : 	validation labels corresponding to validation_data [dim1 x dim2]
+
+`mini_batch_locations` : the locations in training_data for each of the observations in each batch. Second dimensions defines the batch size.
 
 `network_save_filename` :	 the filename named used to save the network configuration and parameters.
 
